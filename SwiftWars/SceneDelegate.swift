@@ -62,3 +62,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+
+struct Cinema: Decodable, Identifiable {
+    
+    var id: String { self.title }
+    
+    let title: String
+    let cost: String
+    let begins: String
+}

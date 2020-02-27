@@ -9,8 +9,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @Resource("logo") var logo: Image
+    @Resource("sw") var title: String
+    
     var body: some View {
-        Text("Hello, World!")
+        NavigationView {
+            VStack {
+                List {
+                    logo
+                        .resizable()
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, idealHeight: 300, maxHeight: 300)
+                    
+                    Spacer()
+                }
+                .buttonStyle(PlainButtonStyle())
+
+            }
+            .navigationBarTitle(title)
+        }
+        
     }
 }
 
