@@ -8,37 +8,23 @@
 
 import SwiftUI
 
-
-//@_functionBuilder
-//struct URLQuery {
-//    static func buildBlock(_ body: String...) -> URL {
-//        let string = body.joined(separator: "/")
-//        return URL(string: string)!
-//    }
-//}
-//
-//struct MyURL {
-//    let url: URL
-//    
-//    init(@URLQuery content: () -> URL) {
-//        self.url = content()
-//    }
-//}
-//
+// prop Resource
 
 @propertyWrapper
 struct Resource<T: ResourceConvert> {
     var wrappedValue: T {
-        get { T.init(resourceName: self.name) }
+        get { T.init(resourceName: name) }
     }
     
-    private let name: String
+    let name: String
     
-    init(_ name: String) {
+    init(name: String) {
         self.name = name
     }
 }
 
+
+// res
 
 protocol ResourceConvert {
     init(resourceName: String)
@@ -62,11 +48,12 @@ extension Array: ResourceConvert where Element: Decodable {
         do {
             let mockURL = Bundle.main.url(forResource: resourceName, withExtension: "json")!
             let mockData = try Data(contentsOf: mockURL)
-            self = try JSONDecoder().decode([Element].self, from: mockData)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            self = try decoder.decode([Element].self, from: mockData)
         } catch {
             self = []
         }
-        
-        self = []
     }
 }
+
